@@ -1,6 +1,9 @@
-export default class select {
+import component from "../component.js"
+
+export default class select extends component{
 
     constructor(input_name, options, label='', placeholder='') {
+        super()
         this.input_name = input_name
         this.label = label
         this.placeholder = placeholder
@@ -19,7 +22,7 @@ export default class select {
     render() {
 
         return `
-        <div class="col-md">
+        <div class="col-md" _id="${this.id}">
             <div class="form-group">
             <label for="${this.input_name}">${this.label}</label>
             <select

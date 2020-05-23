@@ -2,10 +2,12 @@ import input from "../input/input.js";
 import select from "../select/select.js";
 import textarea from "../textarea/textarea.js";
 import button from "../button/button.js";
+import component from "../component.js";
 
-export default class form {
+export default class form extends component {
 
     constructor() {
+        super()
         this.author_name_input = new input('author_name', 'Your name *', 'Write your name here')
         this.author_email_input = new input('author_email', 'Your email *', 'Write your email here')
         this.topic_title_input = new input('topic_title', 'Topic *', 'Write your suggested topic here')
@@ -42,7 +44,7 @@ export default class form {
     
     render() {
         return `
-        <form id="video-form">
+        <form id="video-form" _id="${this.id}">
           <div class="row">
             ${this.author_name_input.render()}
             ${this.author_email_input.render()}
