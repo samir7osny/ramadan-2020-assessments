@@ -2,10 +2,11 @@ import component from "../component.js"
 
 export default class button extends component {
 
-    constructor(type, button_text) {
+    constructor(type, button_text, cls='success') {
         super()
         this.type = type
         this.button_text = button_text
+        this.class = cls
     }
 
 
@@ -16,7 +17,7 @@ export default class button extends component {
     render() {
 
         return `
-        <button type="${this.type}" class="btn btn-success mt-3" _id="${this.id}">
+        <button type="${this.type}" class="btn btn-${this.class}" _id="${this.id}">
             ${this.button_text}
         </button>
         `

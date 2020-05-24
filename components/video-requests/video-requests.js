@@ -7,11 +7,16 @@ export default class app extends component {
         super()
         this.video_requests_records = []
         this.video_requests = []
+        this.filters = {
+            'sort': 'new_first',
+            'filter': 'all',
+            'search': ''
+        }
 
-        this.update()
+        this.get_records()
     }
 
-    update() {
+    get_records() {
         fetch('http://localhost:7777/video-request').then(response => response.json()).then(records => {
             this.video_requests_records = records
             this.video_requests = []
@@ -20,9 +25,32 @@ export default class app extends component {
                     new video_request(record)
                 )
             })
-            super.update()
-            this.ready()
+            this.update()
         })
+    }
+
+    update() {
+        let filtered_records = this.video_requests_records
+        let sort = this.filters.sort
+        if (sort == 'new_first')
+            filtered_records.sort((a,b) => (new Date(a.submit_date) > new Date(b.submit_date)) ? -1 : ((new Date(b.submit_date) > new Date(a.submit_date)) ? 1 : 0))
+        else 
+            filtered_records.sort((a,b) => (a.votes.ups - a.votes.downs > b.votes.ups - b.votes.downs) ? -1 : ((b.votes.ups - b.votes.downs > a.votes.ups - a.votes.downs) ? 1 : 0))
+        
+        let filter = this.filters.filter
+        if (filter != 'all') filtered_records.filter(record => record.status == filter)
+        
+        let search = this.filters.search
+        if (search != '') filtered_records = filtered_records.filter(record => record.topic_title && record.topic_title.toLowerCase().includes(search.toLowerCase()))
+
+        this.video_requests = []
+        filtered_records.forEach(record => {
+            this.video_requests.push(
+                new video_request(record)
+            )
+        })
+
+        super.update()
     }
 
     ready() {

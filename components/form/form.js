@@ -8,16 +8,16 @@ export default class form extends component {
 
     constructor(callback) {
         super()
-        this.author_name_input = new input('author_name', 'Your name *', 'Write your name here')
-        this.author_email_input = new input('author_email', 'Your email *', 'Write your email here')
-        this.topic_title_input = new input('topic_title', 'Topic *', 'Write your suggested topic here')
+        this.author_name_input = new input('author_name', 'Write your name here', 'Your name *')
+        this.author_email_input = new input('author_email', 'Write your email here', 'Your email *')
+        this.topic_title_input = new input('topic_title', 'Write your suggested topic here', 'Topic *')
         this.target_level_select = new select('target_level', [
             {value: 'beginner', text: 'Beginner'},
             {value: 'medium', text: 'Medium'},
             {value: 'advanced', text: 'Advanced'},
-        ], 'Target level', 'Write your name here')
-        this.topic_details_select = new textarea('topic_details', 'More details *', 'Write your topic in more details here')
-        this.expected_result_select = new textarea('expected_result', 'Expected results', 'Write what do you expect after watching this video')
+        ], 'Write your name here', 'Target level')
+        this.topic_details_textarea = new textarea('topic_details', 'Write your topic in more details here', 'More details *')
+        this.expected_result_textarea = new textarea('expected_result', 'Write what do you expect after watching this video', 'Expected results')
 
         
         this.submit_button = new button('submit', 'Send video request')
@@ -62,8 +62,8 @@ export default class form extends component {
             ${this.target_level_select.render()}
           </div>
           <div class="row">
-            ${this.topic_details_select.render()}
-            ${this.expected_result_select.render()}
+            ${this.topic_details_textarea.render()}
+            ${this.expected_result_textarea.render()}
           </div>
 
           ${this.submit_button.render()}
