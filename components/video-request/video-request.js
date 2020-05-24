@@ -11,6 +11,33 @@ export default class video_request extends component {
 
     ready() {
         
+        this.vote_up = document.querySelector(`[_id="${this.id}"] #vote-up`)
+        this.vote_up.addEventListener('click', (e) => {
+            this.vote('ups')
+        })
+        
+        this.vote_down = document.querySelector(`[_id="${this.id}"] #vote-down`)
+        this.vote_down.addEventListener('click', (e) => {
+            this.vote('downs')
+        })
+    }
+
+    vote(vote_type) {
+        fetch('http://localhost:7777/video-request/vote', {
+            method: 'put',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: this.record._id,
+                vote_type: vote_type
+            }),
+        }).then(response => response.json())
+        .then(res => {
+            this.record = res
+            this.update()
+        })
     }
 
     render() {
@@ -26,9 +53,9 @@ export default class video_request extends component {
                 </p>
             </div>
             <div class="d-flex flex-column text-center">
-                <a class="btn btn-link">🔺</a>
+                <a class="btn btn-link" id="vote-up">🔺</a>
                 <h3>${this.record.votes.ups - this.record.votes.downs}</h3>
-                <a class="btn btn-link">🔻</a>
+                <a class="btn btn-link" id="vote-down">🔻</a>
             </div>
             </div>
             <div class="card-footer d-flex flex-row justify-content-between">

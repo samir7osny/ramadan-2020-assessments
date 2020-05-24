@@ -6,8 +6,12 @@ export default class app extends component {
 
     constructor() {
         super()
-        this.video_form = new form()
         this.video_requests = new video_requests()
+        this.video_form = new form(this.form_callback.bind(this))
+    }
+
+    form_callback() {
+        this.video_requests.update()
     }
 
     ready() {

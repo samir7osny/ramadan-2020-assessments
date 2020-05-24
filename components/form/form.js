@@ -6,7 +6,7 @@ import component from "../component.js";
 
 export default class form extends component {
 
-    constructor() {
+    constructor(callback) {
         super()
         this.author_name_input = new input('author_name', 'Your name *', 'Write your name here')
         this.author_email_input = new input('author_email', 'Your email *', 'Write your email here')
@@ -21,6 +21,8 @@ export default class form extends component {
 
         
         this.submit_button = new button('submit', 'Send video request')
+
+        this.callback = callback
     }
 
     ready() {
@@ -28,6 +30,10 @@ export default class form extends component {
         this.form.addEventListener('submit', (e) => {
             this.submit(e)
         })
+    }
+
+    reset() {
+
     }
 
     submit(e) {
@@ -38,7 +44,8 @@ export default class form extends component {
             body: form_data,
         })
         .then(res => {
-            
+            e.target.reset()
+            this.callback()
         })
     }
     

@@ -8,10 +8,10 @@ export default class app extends component {
         this.video_requests_records = []
         this.video_requests = []
 
-        this.get_records()
+        this.update()
     }
 
-    get_records() {
+    update() {
         fetch('http://localhost:7777/video-request').then(response => response.json()).then(records => {
             this.video_requests_records = records
             this.video_requests = []
@@ -20,12 +20,12 @@ export default class app extends component {
                     new video_request(record)
                 )
             })
-            this.update()
+            super.update()
+            this.ready()
         })
     }
 
     ready() {
-        this.video_form.ready()
         this.video_requests.forEach(video_request => {
             video_request.ready()
         })
