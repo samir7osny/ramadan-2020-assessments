@@ -2,11 +2,13 @@ import component from "../component.js"
 
 export default class input extends component {
 
-    constructor(input_name, placeholder='', label=null) {
+    constructor(input_name, placeholder='', label=null, required=false, maxLength=-1) {
         super()
         this.input_name = input_name
         this.label = label
         this.placeholder = placeholder
+        this.required = required
+        this.maxLength = maxLength
     }
 
 
@@ -21,6 +23,8 @@ export default class input extends component {
             <div class="form-group">
             ${this.label ? `<label for="${this.input_name}">${this.label}</label>` : ''}
             <input
+                ${this.required ? 'required': ''}
+                ${this.maxLength != -1 ? `maxLength="${this.maxLength}"` : ''}
                 class="form-control"
                 name="${this.input_name}"
                 placeholder="${this.placeholder}"

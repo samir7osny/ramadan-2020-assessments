@@ -8,15 +8,15 @@ export default class form extends component {
 
     constructor(callback) {
         super()
-        this.author_name_input = new input('author_name', 'Write your name here', 'Your name *')
-        this.author_email_input = new input('author_email', 'Write your email here', 'Your email *')
-        this.topic_title_input = new input('topic_title', 'Write your suggested topic here', 'Topic *')
+        this.author_name_input = new input('author_name', 'Write your name here', 'Your name *', true)
+        this.author_email_input = new input('author_email', 'Write your email here', 'Your email *', true, 100)
+        this.topic_title_input = new input('topic_title', 'Write your suggested topic here', 'Topic *', true, 100)
         this.target_level_select = new select('target_level', [
             {value: 'beginner', text: 'Beginner'},
             {value: 'medium', text: 'Medium'},
             {value: 'advanced', text: 'Advanced'},
         ], 'Write your name here', 'Target level')
-        this.topic_details_textarea = new textarea('topic_details', 'Write your topic in more details here', 'More details *')
+        this.topic_details_textarea = new textarea('topic_details', 'Write your topic in more details here', 'More details *', true)
         this.expected_result_textarea = new textarea('expected_result', 'Write what do you expect after watching this video', 'Expected results')
 
         
