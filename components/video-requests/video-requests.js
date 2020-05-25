@@ -34,6 +34,7 @@ export default class app extends component {
             if (rec._id == record._id) return record
             else return rec
         })
+        this.update()
     }
 
     update() {

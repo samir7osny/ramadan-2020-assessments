@@ -6,10 +6,10 @@ import component from "../component.js";
 
 export default class form extends component {
 
-    constructor(callback) {
+    constructor(user, callback) {
         super()
-        this.author_name_input = new input('author_name', 'Write your name here', 'Your name *', true)
-        this.author_email_input = new input('author_email', 'Write your email here', 'Your email *', true, 100)
+        // this.author_name_input = new input('author_name', 'Write your name here', 'Your name *', true)
+        // this.author_email_input = new input('author_email', 'Write your email here', 'Your email *', true, 100, 'email')
         this.topic_title_input = new input('topic_title', 'Write your suggested topic here', 'Topic *', true, 100)
         this.target_level_select = new select('target_level', [
             {value: 'beginner', text: 'Beginner'},
@@ -22,14 +22,17 @@ export default class form extends component {
         
         this.submit_button = new button('submit', 'Send video request')
 
+        this.user = user
         this.callback = callback
     }
 
     ready() {
         this.form = document.getElementById('video-form')
-        this.form.addEventListener('submit', (e) => {
-            this.submit(e)
-        })
+        if (this.form) {
+            this.form.addEventListener('submit', (e) => {
+                this.submit(e)
+            })
+        }
     }
 
     reset() {
@@ -38,11 +41,21 @@ export default class form extends component {
 
     submit(e) {
         e.preventDefault()
+        if (!this.user) return
         let form_data = new FormData(e.target)
+        let object = {}
+        form_data.forEach((value, key) => {object[key] = value})
+        object['author_name'] = this.user.author_name
+        object['author_email'] = this.user.author_email
+        let json = JSON.stringify(object)
         fetch('http://localhost:7777/video-request', {
             method: 'post',
-            body: form_data,
-        })
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: json,
+        }).then(response => response.json())
         .then(res => {
             e.target.reset()
             this.callback()
@@ -52,21 +65,21 @@ export default class form extends component {
     render() {
         return `
         <form id="video-form" _id="${this.id}">
-          <div class="row">
-            ${this.author_name_input.render()}
-            ${this.author_email_input.render()}
-          </div>
-          <hr />
-          <div class="row">
-            ${this.topic_title_input.render()}
-            ${this.target_level_select.render()}
-          </div>
-          <div class="row">
-            ${this.topic_details_textarea.render()}
-            ${this.expected_result_textarea.render()}
-          </div>
+            ${this.user ? `
+            <div class="row">
+                ${this.topic_title_input.render()}
+                ${this.target_level_select.render()}
+            </div>
+            <div class="row">
+                ${this.topic_details_textarea.render()}
+                ${this.expected_result_textarea.render()}
+            </div>
+            <hr />
+            ${this.submit_button.render()}
+            ` : `
+            <h5 class="text-center">You must login to add request</h5>
+            `}
 
-          ${this.submit_button.render()}
         </form>
         `
     }

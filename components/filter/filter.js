@@ -71,11 +71,13 @@ export default class filter extends component {
         })
         
         this.search = document.querySelector(`[_id="${this.id}"] [type="search"]`)
-        this.search.addEventListener('keyup', (e) => {
-            this.filters.search = e.target.value
-            
-            this.callback(this.filters)
-        })
+        if (this.search) {
+            this.search.addEventListener('keyup', (e) => {
+                this.filters.search = e.target.value
+                
+                this.callback(this.filters)
+            })
+        }
 
     }
 

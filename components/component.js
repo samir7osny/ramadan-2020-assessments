@@ -22,7 +22,9 @@ export default class component{
     }
 
     update() {
-        this.getElementByAttribute('_id', this.id).outerHTML = this.render()
-        this.ready()
+        if (this.getElementByAttribute('_id', this.id)) {
+            this.getElementByAttribute('_id', this.id).outerHTML = this.render()
+            this.ready()
+        }
     }
 }
