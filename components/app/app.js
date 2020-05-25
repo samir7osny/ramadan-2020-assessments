@@ -35,7 +35,9 @@ export default class app extends component {
         this.active = 'home'
         this.navbar.user = user
         this.video_form.user = user
+        this.video_requests.user = user
         this.update()
+        this.video_requests.update()
     }
 
     filter_callback(filters) {

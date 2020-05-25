@@ -18,6 +18,14 @@ export default class app extends component {
 
     get_records() {
         fetch('http://localhost:7777/video-request').then(response => response.json()).then(records => {
+            records = records.map(record => {
+                record.votes = {
+                    ups: record.users.ups.length,
+                    downs: record.users.downs.length
+                }
+                return record
+            })
+            console.log(records)
             this.video_requests_records = records
             this.video_requests = []
             // this.video_requests_records.forEach(record => {
@@ -54,7 +62,7 @@ export default class app extends component {
         this.video_requests = []
         filtered_records.forEach(record => {
             this.video_requests.push(
-                new video_request(record, this.update_record.bind(this))
+                new video_request(record, this.update_record.bind(this), this.user)
             )
         })
 

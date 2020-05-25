@@ -19,6 +19,7 @@ app.get('/', (req, res) =>
 
 app.use(express.json());
 app.post('/video-request', async (req, res, next) => {
+  req.body.users_voted = []
   const response = await VideoRequestData.createRequest(req.body);
   res.send(response);
   next();
@@ -43,8 +44,8 @@ app.post('/users/login', async (req, res, next) => {
 });
 
 app.put('/video-request/vote', async (req, res, next) => {
-  const { id, vote_type } = req.body;
-  const response = await VideoRequestData.updateVoteForRequest(id, vote_type);
+  const { id, vote_type, author_id } = req.body;
+  const response = await VideoRequestData.updateVoteForRequest(id, vote_type, author_id);
   res.send(response);
   next();
 });

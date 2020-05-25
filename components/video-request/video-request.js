@@ -2,28 +2,34 @@ import component from "../component.js"
 
 export default class video_request extends component {
 
-    constructor(record, callback) {
+    constructor(record, callback, user=null) {
         super()
 
         this.record = record
         this.callback = callback
+
+        this.user = user
     }
 
 
     ready() {
-        
         this.vote_up = document.querySelector(`[_id="${this.id}"] #vote-up`)
-        this.vote_up.addEventListener('click', (e) => {
-            this.vote('ups')
-        })
+        if (this.vote_up) {
+            this.vote_up.addEventListener('click', (e) => {
+                this.vote('ups')
+            })
+        }
         
         this.vote_down = document.querySelector(`[_id="${this.id}"] #vote-down`)
-        this.vote_down.addEventListener('click', (e) => {
-            this.vote('downs')
-        })
+        if (this.vote_down){
+            this.vote_down.addEventListener('click', (e) => {
+                this.vote('downs')
+            })
+        }
     }
 
     vote(vote_type) {
+        if (!this.user) return
         fetch('http://localhost:7777/video-request/vote', {
             method: 'put',
             headers: {
@@ -32,10 +38,16 @@ export default class video_request extends component {
             },
             body: JSON.stringify({
                 id: this.record._id,
-                vote_type: vote_type
+                vote_type: vote_type,
+                author_id: this.user._id
             }),
         }).then(response => response.json())
         .then(res => {
+            console.log(res)
+            res.votes = {
+                ups: res.users.ups.length,
+                downs: res.users.downs.length
+            }
             this.record = res
             this.update()
             this.callback(this.record)
@@ -55,9 +67,9 @@ export default class video_request extends component {
                 </p>
             </div>
             <div class="d-flex flex-column text-center">
-                <a class="btn btn-link" id="vote-up">🔺</a>
+                <a class="btn btn-link" id="vote-up" ${!this.user ? 'style="opacity: 0.2; cursor: default;"' : ''}>🔺</a>
                 <h3>${this.record.votes.ups - this.record.votes.downs}</h3>
-                <a class="btn btn-link" id="vote-down">🔻</a>
+                <a class="btn btn-link" id="vote-down" ${!this.user ? 'style="opacity: 0.2; cursor: default;"' : ''}>🔻</a>
             </div>
             </div>
             <div class="card-footer d-flex flex-row justify-content-between">
