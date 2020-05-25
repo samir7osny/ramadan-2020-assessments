@@ -20,12 +20,19 @@ export default class app extends component {
         fetch('http://localhost:7777/video-request').then(response => response.json()).then(records => {
             this.video_requests_records = records
             this.video_requests = []
-            this.video_requests_records.forEach(record => {
-                this.video_requests.push(
-                    new video_request(record)
-                )
-            })
+            // this.video_requests_records.forEach(record => {
+            //     this.video_requests.push(
+            //         new video_request(record, this.update_record.bind(this))
+            //     )
+            // })
             this.update()
+        })
+    }
+
+    update_record(record) {
+        this.video_requests_records = this.video_requests_records.map((rec, idx) => {
+            if (rec._id == record._id) return record
+            else return rec
         })
     }
 
@@ -46,7 +53,7 @@ export default class app extends component {
         this.video_requests = []
         filtered_records.forEach(record => {
             this.video_requests.push(
-                new video_request(record)
+                new video_request(record, this.update_record.bind(this))
             )
         })
 

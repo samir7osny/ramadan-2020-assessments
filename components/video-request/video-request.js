@@ -2,10 +2,11 @@ import component from "../component.js"
 
 export default class video_request extends component {
 
-    constructor(record) {
+    constructor(record, callback) {
         super()
 
         this.record = record
+        this.callback = callback
     }
 
 
@@ -37,6 +38,7 @@ export default class video_request extends component {
         .then(res => {
             this.record = res
             this.update()
+            this.callback(this.record)
         })
     }
 
